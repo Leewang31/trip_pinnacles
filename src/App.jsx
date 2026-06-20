@@ -7,12 +7,17 @@ const _placeCache = new Map()
 const _pendingCallbacks = new Map()
 
 function _fetchPlaceDetails(query) {
+  if (!MAPS_KEY) return Promise.resolve({})
   if (_placeCache.has(query)) return Promise.resolve(_placeCache.get(query))
   if (_pendingCallbacks.has(query)) return _pendingCallbacks.get(query)
 
   const promise = new Promise((resolve) => {
+    let retries = 0
     const attempt = () => {
-      if (!window.google?.maps?.places) { setTimeout(attempt, 400); return }
+      if (!window.google?.maps?.places) {
+        if (++retries > 30) { resolve({}); return }
+        setTimeout(attempt, 400); return
+      }
       const div = document.createElement('div')
       const svc = new window.google.maps.places.PlacesService(div)
       svc.findPlaceFromQuery(
