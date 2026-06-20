@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 
-const MAPS_KEY = import.meta.env.VITE_MAPS_KEY
+const MAPS_KEY = 'AIzaSyCpxQouLfUctGTK_oamhLQydsi71aH3sNg'
 
 // Module-level cache: query → { photos: string[], reviews: object[] }
 const _placeCache = new Map()
